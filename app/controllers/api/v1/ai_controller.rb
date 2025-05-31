@@ -83,7 +83,7 @@ DOC
     client = Bot::OpenRouter.new
     rst = client.generate_text(message, { prompt: prompt })
     result = rst['choices'][0]['message']['content'].sub(/\A\s*```\s*\S*\s*\n?/, '').sub(/\s*```\s*\z/, '')
-    ai_call.update_ai_call_status(h)
+    ai_call.update_ai_call_status(result)
     render json: JSON.load(result)
   end
 
