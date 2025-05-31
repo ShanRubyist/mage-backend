@@ -6,7 +6,8 @@ module Bot
       @api_key = api_key
       @api_base_url = api_base_url
       @path = '/api/v1/chat/completions'
-      @model = 'openai/o1-mini'
+      # @model = 'openai/o1-mini'
+      @model = 'google/gemini-2.0-flash-001'
       @buff = ''
     end
 
