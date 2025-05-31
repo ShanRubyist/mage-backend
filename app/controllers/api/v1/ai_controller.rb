@@ -14,7 +14,7 @@ class Api::V1::AiController < UsageController
     type = params['type'] || raise('type can not be empty')
     magic = params['magic'] || raise('magic can not be empty')
     alignment = params['alignment'] || raise('alignment can not be empty')
-    prompt =-<<DOC
+    prompt = -<<DOC
 You are an efficient wizard name generator. Based on user input in the format `gender/race/worldview/element/alignment`, immediately generate 10 unique wizard names with full attributes. Return ONLY pure JSON data without any additional text.
 
 **Rules:**
@@ -35,12 +35,15 @@ You are an efficient wizard name generator. Based on user input in the format `g
      ∙ Alignment (if input=random → random from `[evil, white]`)
 
 3. **Naming Requirements**:  
-   - Generate 10 UNIQUE names (8-16 characters each)  
-   - Names MUST combine:  
+   - Generate 10 UNIQUE names (8-16 characters)  
+   - Names MUST contain:  
      ∙ Worldview-appropriate element root  
      ∙ Worldview-appropriate alignment root  
-   - Meaning format (15-40 characters):  
-     `"<Etymology blend> + <Element manifestation> + <Alignment connotation>"`  
+   - Meaning description (concise 1 or 2 sentences explanation):
+     - Explain name's significance and connection to attributes
+     - Include element/alignment representation
+     - Optional: Mention race/gender influences
+     - Example: "Pyros Mortis signifies a fire mage's destructive power with dark alignment"
 
 4. **Worldview Styling**:  
    | Worldview   | Features              | Element Roots (e.g.)          | Alignment Roots (e.g.)     |  
@@ -83,7 +86,7 @@ DOC
     client = Bot::OpenRouter.new
     rst = client.generate_text(message, { prompt: prompt })
     result = rst['choices'][0]['message']['content'].sub(/\A\s*```\s*\S*\s*\n?/, '').sub(/\s*```\s*\z/, '')
-    ai_call.update_ai_call_status(result)
+    ai_call.update_ai_call_status(status: 'success', data: result)
     render json: JSON.load(result)
   end
 
