@@ -4,6 +4,8 @@ class AiCall < ApplicationRecord
   has_many_attached :input_media
   has_many_attached :generated_media
 
+  has_many :mage_names
+
   scope :succeeded_ai_calls, -> { where("ai_calls.status = ?", 'success') }
 
   def update_ai_call_status(h)

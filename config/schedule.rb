@@ -26,6 +26,10 @@ every 1.day, at: ['10:00 am'] do
   runner "ScrapeJob.perform_later", environment: :production
 end
 
+every 1.hour do
+  runner "MageNameJob.perform_later", environment: :production
+end
+
 # every '30 * * * *' do
 #   runner "KeywordsJob.perform_later", environment: :development
 # end
