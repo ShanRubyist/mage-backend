@@ -1,8 +1,8 @@
 require 'bot'
 
 class Api::V1::AiController < UsageController
-  # skip_around_action :check_credits, only: [:ai_call_info]
-  # skip_before_action :check_if_maintenance_mode, only: [:ai_call_info]
+  # skip_around_action :check_credits, only: [:ai_call_info, :mage_names_by_category]
+  # skip_before_action :check_if_maintenance_mode, only: [:ai_call_info, :mage_names_by_category]
   include Turnstile
 
   def mage_names
@@ -88,6 +88,37 @@ DOC
     result = rst['choices'][0]['message']['content'].sub(/\A\s*```\s*\S*\s*\n?/, '').sub(/\s*```\s*\z/, '')
     ai_call.update_ai_call_status(status: 'success', data: result)
     render json: JSON.load(result)
+  end
+
+  def mage_names_by_category
+    category = params['category'] || fail('category can not be empty')
+    male_names = MageName.where('race = :category OR worldview = :category OR element = :category OR alignment = :category', category: category)
+                         .where('gender = ?', 'male').limit(100)
+    female_names = MageName.where('race = :category OR worldview = :category OR element = :category OR alignment = :category', category: category)
+                         .where('gender = ?', 'female').limit(100)
+
+    render json: {
+      male_names: (male_names.map do |name|
+        {
+          name: name.name,
+          meaning: name.meaning,
+          race: name.race,
+          worldview: name.worldview,
+          element: name.element,
+          alignment: name.alignment,
+        }
+      end),
+      female_names: (female_names.map do |name|
+        {
+          name: name.name,
+          meaning: name.meaning,
+          race: name.race,
+          worldview: name.worldview,
+          element: name.element,
+          alignment: name.alignment,
+        }
+      end),
+    }
   end
 
   def gen_image

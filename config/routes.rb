@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       get 'active_subscription_info', to: 'info#active_subscription_info', as: 'active_subscription_info'
 
       post 'mage_names', to: 'ai#mage_names'
+      get 'mage_names_by_category', to: 'ai#mage_names_by_category'
       post 'gen_image', to: 'ai#gen_image'
       post 'gen_video', to: 'ai#gen_video'
       get 'ai_call_info', to: 'ai#ai_call_info'
