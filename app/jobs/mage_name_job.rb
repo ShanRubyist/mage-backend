@@ -12,6 +12,14 @@ class MageNameJob < ApplicationJob
         h = data
       end
 
+      # 之前的旧数据，data字段存的格式是{status: xx, data: xx}
+      h = h['data'] if h['data']
+      if h.class == String
+        h = JSON.load(h)
+      else
+        h = h
+      end
+
       h['names'].each do |name|
         ac.mage_names.create(name: name['name'],
                              meaning: name['meaning'],
