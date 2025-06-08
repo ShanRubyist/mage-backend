@@ -7,6 +7,7 @@ class CreateMageNames < ActiveRecord::Migration[7.0]
       t.string :race
       t.string :worldview
       t.string :element
+      t.string :gender
       t.string :alignment
 
       t.timestamps

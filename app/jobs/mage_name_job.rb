@@ -18,7 +18,9 @@ class MageNameJob < ApplicationJob
                              race: name['race'],
                              worldview: name['worldview'],
                              element: name['element'],
-                             alignment: name['alignment'])
+                             alignment: name['alignment'],
+                             gender: name['gender']
+        )
       end
     end
   end

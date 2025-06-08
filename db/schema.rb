@@ -83,6 +83,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_08_094845) do
     t.string "race"
     t.string "worldview"
     t.string "element"
+    t.string "gender"
     t.string "alignment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
