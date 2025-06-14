@@ -21,14 +21,18 @@ class MageNameJob < ApplicationJob
       end
 
       h['names'].each do |name|
-        ac.mage_names.create(name: name['name'],
-                             meaning: name['meaning'],
-                             race: name['race'],
-                             worldview: name['worldview'],
-                             element: name['element'],
-                             alignment: name['alignment'],
-                             gender: name['gender']
-        )
+        begin
+          ac.mage_names.create(name: name['name'],
+                               meaning: name['meaning'],
+                               race: name['race'],
+                               worldview: name['worldview'],
+                               element: name['element'],
+                               alignment: name['alignment'],
+                               gender: name['gender']
+          )
+        rescue
+          Rails.logger.error "#{name['name']} exist"
+        end
       end
     end
   end
